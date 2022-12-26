@@ -98,8 +98,6 @@ register.addEventListener('click', function(event) {
                 password: inputs[2].value
             });
             localStorage.setItem('users', JSON.stringify(users));
-            header.textContent = 'Registration Successful';
-            header.style.color = 'green';
             for (let i = 0; i < inputs.length - 1; i++) {
                 if (inputs[i].value === '') {
                   inputs[i].style.border = '1px solid red';
@@ -109,8 +107,6 @@ register.addEventListener('click', function(event) {
               }
               
         } else {
-            header.textContent = 'Registration Failed';
-            header.style.color = 'red';
             return false;
         }
       });
