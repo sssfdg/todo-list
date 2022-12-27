@@ -130,7 +130,7 @@ function updateMeter(strength) {
       meter.style.backgroundColor = 'red';
       meter.style.width = '25%';
       break;
-    case strength < 4:
+    case strength < 5:
       meter.style.backgroundColor = 'orange';
       meter.style.width = '50%';
       break;
