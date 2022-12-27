@@ -122,7 +122,6 @@ function checkPassword(password) {
 }
 function updateMeter(strength) {
   const meter = document.getElementsByClassName('meter')[0];
-  const warnings = document.getElementsByClassName('warnings');
   // set background color and width of meter based on strength
   meter.classList.remove('d-none');
   switch (true) {
