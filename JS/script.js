@@ -1,9 +1,9 @@
 let span = document.getElementsByTagName('span');
 let show = document.getElementById('show');
 let inputs = document.getElementsByTagName('input');
-let meter = document.getElementsByClassName('meter')[0];
 let register = document.getElementById('register');
 let header = document.getElementById('header');
+let letters = "made with ❤".split("")
 let isMouseDown = false;
 document.addEventListener('mouseup', function () {
   isMouseDown = false;
@@ -28,6 +28,20 @@ for (let i = 0; i < span.length; i++) {
     }
   });
 }
+for (let i = 0; i < span.length; i++) {
+  span[i].textContent = letters[i]
+}
+// setTimeout(function() {
+//   for (let i = 0; i < span.length; i++) {
+//     span[i].style.opacity = 0
+//   }
+// }, 5000)
+// setTimeout(function() {
+//   for (let i = 0; i < span.length; i++) {
+//     span[i].textContent = ''
+//     span[i].style.opacity = 1
+//     }
+// }, 6000)
 function userCheck(users, inputs) {
   // check if inputs are empty
   if (inputs[0].value === '' || inputs[1].value === '') {
@@ -76,41 +90,55 @@ function userCheck(users, inputs) {
   inputs[1].style.border = 'none';
   return true;
 }
-function checkPassword(password, minLength = 8, minStrength = 4) {
-  if (password.length === 0) {
-    return false;
-  }
-  // check if password contains spaces
-  if (password.includes(' ')) {
-    return false;
+function checkPassword(password) {
+  // check if password is empty or contains spaces
+  if (!password || password.includes(' ')) {
+    return 0;
   }
   let strength = 0;
-  const conditions = [
-    password.length >= minLength,
-    /[A-Z]/.test(password),
-    /[a-z]/.test(password),
-    /[0-9]/.test(password),
-    /[!@#\$%\^&\*]/.test(password)
-  ];
-
-  for (const condition of conditions) {
-    strength += condition ? 1 : 0;
+  // check if password contains at least 1 lowercase letter
+  if (password.match(/[a-z]/)) {
+    strength++;
   }
-  meter.classList.remove('d-none');
-  if (strength < minStrength) {
-    meter.style.width = `20%`;
-    meter.style.backgroundColor = "red";
-  } else if (strength === minStrength) {
-    meter.style.width = `${strength * 20}%`;
-    meter.style.backgroundColor = "orange";
-  } else if (strength === 5) {
-    meter.style.width = `${strength * 20}%`;
-    meter.style.backgroundColor = "green";
+  // check if password contains at least 1 uppercase letter
+  if (password.match(/[A-Z]/)) {
+    strength++;
   }
-  return strength >= minStrength;
+  // check if password contains at least 1 number
+  if (password.match(/[0-9]/)) {
+    strength++;
+  }
+  // check if password contains at least 1 special character
+  if (password.match(/[!@#$%^&*]/)) {
+    strength++;
+  }
+  // check if password is at least 6 characters
+  if (password.length >= 6) {
+    strength++;
+  } else {
+    return 0;
+  }
+  return strength;
 }
-
-
+function updateMeter(strength) {
+  const meter = document.getElementsByClassName('meter')[0];
+  const warnings = document.getElementsByClassName('warnings');
+  // set background color and width of meter based on strength
+  meter.classList.remove('d-none');
+  switch (true) {
+    case strength < 3:
+      meter.style.backgroundColor = 'red';
+      meter.style.width = '25%';
+      break;
+    case strength < 4:
+      meter.style.backgroundColor = 'orange';
+      meter.style.width = '50%';
+      break;
+    default:
+      meter.style.backgroundColor = 'green';
+      meter.style.width = '100%';
+  }
+}
 
 register.addEventListener('click', function(e) {
   e.preventDefault();
@@ -118,7 +146,9 @@ register.addEventListener('click', function(e) {
   const passwordInput = document.getElementById('password');
   let x = userCheck(users, inputs);
   let y = checkPassword(passwordInput.value);
-  if (x && y) {
+  updateMeter(y);
+  console.log(x, y);
+  if (x && (y === 5)) {
     let user = {
       username: inputs[0].value.toLowerCase(),
       email: inputs[1].value.toLowerCase(),
@@ -129,8 +159,11 @@ register.addEventListener('click', function(e) {
     inputs[1].value = '';
     passwordInput.value = '';
     meter.style.width = '0%';
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Registration successful!');
+  } else {
+    alert('Registration unsuccessful!');
   }
-  localStorage.setItem('users', JSON.stringify(users));
 });
 show.addEventListener('click', function () {
     if (inputs[2].type === 'password') {
