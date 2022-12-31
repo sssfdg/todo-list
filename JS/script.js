@@ -1,3 +1,6 @@
+
+//variables and constants
+
 const passwordInput = document.getElementById('password');
 let span = document.getElementsByTagName('span');
 let show = document.getElementById('show');
@@ -7,37 +10,72 @@ let header = document.getElementById('header');
 let letters = "made with ❤".split("");
 const meter = document.getElementsByClassName('meter')[0];
 let isMouseDown = false;
+
+//functions and loops
+
 document.addEventListener('mouseup', function () {
+
+  // reset isMouseDown to false when the mouse is released
+
   isMouseDown = false;
 });
 for (let i = 0; i < span.length; i++) {
-  span[i].addEventListener('mousedown', function (event) {
+
+  // add event listeners to each span
+
+    span[i].addEventListener('mousedown', function (event) {
+
+    // prevent the default action of selecting text
+
     event.preventDefault();
+
+    // set isMouseDown to true and change the background color of the span
+
     isMouseDown = true;
     span[i].style.backgroundColor = '#006494';
   });
+
+
   span[i].addEventListener('mousemove', function () {
+
+    // change the background color of the span if isMouseDown is true
+
     if (isMouseDown) {
       span[i].style.backgroundColor = '#006494';
     }
   });
+
+  // change the background color of the span when the mouse is clicked
+
   span[i].addEventListener('click', function () {
     span[i].style.backgroundColor = '#006494';
   });
+
+  // change the background color of the span when the mouse is released
+
   span[i].addEventListener('mouseleave', function () {
     if (isMouseDown) {
       span[i].style.backgroundColor = '#006494';
     }
   });
 }
+
+//set the text content of each span to the corresponding letter in the letters array
+
 for (let i = 0; i < span.length; i++) {
   span[i].textContent = letters[i]
 }
+
+//add event listeners to the password input and show button to toggle the password visibility
+
 passwordInput.addEventListener('focus', function() {
   show.style.opacity = 1;
 });
+
 function userCheck(users, inputs) {
+
   // check if inputs are empty
+
 for (let i = 0; i <= 1; i++) {
   if (inputs[i].value === '') {
     inputs[i].style.border = '1px solid red';
@@ -48,6 +86,7 @@ for (let i = 0; i <= 1; i++) {
   }
 }
   // check if username or email already exists
+
   for (let i = 0; i <= 1; i++) {
     const input = inputs[i];
   
@@ -66,6 +105,7 @@ for (let i = 0; i <= 1; i++) {
     }
   
     // Reset the border style if the value does not already exist in the users array
+
     input.style.border = 'none';
   }
 
@@ -73,6 +113,7 @@ for (let i = 0; i <= 1; i++) {
     const input2 = inputs[i];
   
     // Check if the input value is at least 3 characters
+
     if (input2.name.toLowerCase() === 'username' && input2.value.length < 3) {
       input2.style.border = '1px solid red';
       input2.value = `${input2.name} must be at least 3 characters`;
@@ -80,39 +121,42 @@ for (let i = 0; i <= 1; i++) {
     }
   
     // Check if the input value does not contain spaces
+
     if (input2.value.includes(' ')) {
       input2.style.border = '1px solid red';
       input2.value = `${input2.name} cannot contain spaces`;
       return false;
   }
     // Reset the border style if the value passes all checks
+
     input2.style.border = 'none';
   }
   return true;
 }
+
 function checkPassword(password) {
-  // check if password is empty or contains spaces
+
+  // check if password is empty or contains spaces and return 0 if true
+
   if (!password || password.includes(' ')) {
     return 0;
   }
   let strength = 0;
-  // check if password contains at least 1 lowercase letter
+
+  // define the strength of the password based on the following matches
+
   if (password.match(/[a-z]/)) {
     strength++;
   }
-  // check if password contains at least 1 uppercase letter
   if (password.match(/[A-Z]/)) {
     strength++;
   }
-  // check if password contains at least 1 number
   if (password.match(/[0-9]/)) {
     strength++;
   }
-  // check if password contains at least 1 special character
   if (password.match(/[!@#$%^&*]/)) {
     strength++;
   }
-  // check if password is at least 6 characters
   if (password.length >= 6) {
     strength++;
   } else {
@@ -121,7 +165,9 @@ function checkPassword(password) {
   return strength;
 }
 function updateMeter(strength) {
+
   // set background color and width of meter based on strength
+
   meter.classList.remove('d-none');
   switch (true) {
     case strength < 3:
@@ -140,11 +186,16 @@ function updateMeter(strength) {
 
 register.addEventListener('click', function(e) {
   e.preventDefault();
+
+  // get the users array from localStorage or set it to an empty array if it does not exist
+
   let users = JSON.parse(localStorage.getItem('users')) || [];;
   let x = userCheck(users, inputs);
   let y = checkPassword(passwordInput.value);
   updateMeter(y);
-  console.log(x, y);
+
+  // check if userCheck and checkPassword return true and push the user object to the users array
+
   if (x && (y === 5)) {
     let user = {
       username: inputs[0].value.toLowerCase(),
@@ -152,6 +203,9 @@ register.addEventListener('click', function(e) {
       password: passwordInput.value
     };
     users.push(user);
+
+    // reset the inputs and meter
+
     for (let i = 0; i <= 2; i++) {
       inputs[i].value = '';
     }
@@ -160,6 +214,9 @@ register.addEventListener('click', function(e) {
     alert('Registration successful!');
   }
 });
+
+// toggle the password visibility
+
 show.addEventListener('click', function () {
     if (inputs[2].type === 'password') {
         inputs[2].type = 'text';
