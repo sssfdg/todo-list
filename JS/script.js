@@ -2,13 +2,14 @@
 //variables and constants
 
 const passwordInput = document.getElementById('password');
+const meter = document.getElementsByClassName('meter')[0];
+const userEmail = document.getElementsByClassName('mainInputs');
+let minimumStrength = 5;
 let span = document.getElementsByTagName('span');
 let show = document.getElementById('show');
 let inputs = document.getElementsByTagName('input');
 let register = document.getElementById('register');
-let header = document.getElementById('header');
 let letters = "made with ❤".split("");
-const meter = document.getElementsByClassName('meter')[0];
 let isMouseDown = false;
 
 //functions and loops
@@ -76,7 +77,7 @@ function userCheck(users, inputs) {
 
   // check if inputs are empty
 
-for (let i = 0; i <= 1; i++) {
+for (let i = 0; i < userEmail.length; i++) {
   if (inputs[i].value === '') {
     inputs[i].style.border = '1px solid red';
     inputs[i].value = `${inputs[i].name} is required`;
@@ -87,7 +88,7 @@ for (let i = 0; i <= 1; i++) {
 }
   // check if username or email already exists
 
-  for (let i = 0; i <= 1; i++) {
+  for (let i = 0; i < userEmail.length; i++) {
     const input = inputs[i];
   
     for (let j = 0; j < users.length; j++) {
@@ -109,7 +110,7 @@ for (let i = 0; i <= 1; i++) {
     input.style.border = 'none';
   }
 
-  for (let i = 0; i <= 1; i++) {
+  for (let i = 0; i < userEmail.length; i++) {
     const input2 = inputs[i];
   
     // Check if the input value is at least 3 characters
@@ -196,7 +197,7 @@ register.addEventListener('click', function(e) {
 
   // check if userCheck and checkPassword return true and push the user object to the users array
 
-  if (x && (y === 5)) {
+  if (x && (y === minimumStrength)) {
     let user = {
       username: inputs[0].value.toLowerCase(),
       email: inputs[1].value.toLowerCase(),
@@ -206,7 +207,7 @@ register.addEventListener('click', function(e) {
 
     // reset the inputs and meter
 
-    for (let i = 0; i <= 2; i++) {
+    for (let i = 0; i <= userEmail.length; i++) {
       inputs[i].value = '';
     }
     meter.style.width = '0%';
@@ -218,12 +219,12 @@ register.addEventListener('click', function(e) {
 // toggle the password visibility
 
 show.addEventListener('click', function () {
-    if (inputs[2].type === 'password') {
-        inputs[2].type = 'text';
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
         show.textContent = 'Hide';
     }
     else {
-        inputs[2].type = 'password';
+        passwordInput.type = 'password';
         show.textContent = 'Show';
     }
 }); 
