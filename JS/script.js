@@ -19,6 +19,7 @@ document.addEventListener('mouseup', function () {
 
   isMouseDown = false;
 });
+
 for (let i = 0; i < span.length; i++) {
 
   // add event listeners to each span
