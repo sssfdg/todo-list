@@ -21,6 +21,31 @@ section {
     align-items: center;
     overflow: hidden;
 }
+section::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:linear-gradient(#000,#0588c5,#000);
+    animation: animate 10s linear infinite;
+    -webkit-animation: animate 10s linear infinite;
+}
+@keyframes animate {
+    0% {
+        transform: translateY(-100%);
+        -webkit-transform: translateY(-100%);
+        -moz-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+        -o-transform: translateY(-100%);
+}
+    100% {
+        transform: translateY(100%);
+        -webkit-transform: translateY(100%);
+        -moz-transform: translateY(100%);
+        -ms-transform: translateY(100%);
+        -o-transform: translateY(100%);
+}
+}
 section .signin {
     position: absolute;
     display: flex;
@@ -114,26 +139,28 @@ section .signin .contain .form .inputBox input:focus ~ i {
     text-decoration: none;
 }
 #show {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     text-transform: uppercase;
     position: absolute;
     left: 270px;
     bottom: 7.5px;
-    color: #333;
+    color: #aaa;
     font-size: 0.8em;
     cursor: pointer;
     background-color: #006494;
+    min-width: 30px;
     padding: 4px;
-    transition: 1s;
     border-radius: 3px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     -o-border-radius: 3px;
-    -webkit-transition: 1s;
-    -moz-transition: 1s;
-    -ms-transition: 1s;
-    -o-transition: 1s;
     user-select: none;
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
 }
 #register {
     padding: 10px;
@@ -148,7 +175,7 @@ section .signin .contain .form .inputBox input:focus ~ i {
 }
 #header{
     font-size: 2em;
-    color: #006494;
+    color: #0587c4;
     text-transform: uppercase;
     
 
