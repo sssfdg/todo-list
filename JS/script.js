@@ -19,6 +19,7 @@ document.addEventListener('mouseup', function () {
   // reset isMouseDown to false when the mouse is released
 
   isMouseDown = false;
+
 });
 for (let i = 0; i < span.length; i++) {
 
@@ -81,7 +82,7 @@ for (let i = 0; i < userEmail.length; i++) {
   if (inputs[i].value === '') {
     inputs[i].style.border = '1px solid red';
     inputs[i].value = `${inputs[i].name} is required`;
-    if (i === 1) {
+    if (i === userEmail.length - 1) {
       return false;
     }
   }
