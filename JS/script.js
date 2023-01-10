@@ -2,17 +2,55 @@
 //variables and constants
 
 const passwordInput = document.getElementById('password');
+const h2 = document.getElementsByTagName('h2')[0];
 const meter = document.getElementsByClassName('meter')[0];
 const userEmail = document.getElementsByClassName('mainInputs');
+let defaultBlue = "#006494"
+let anchors = document.getElementsByTagName('a');
 let minimumStrength = 5;
 let span = document.getElementsByTagName('span');
 let show = document.getElementById('show');
 let inputs = document.getElementsByTagName('input');
 let register = document.getElementById('register');
 let letters = "made with ❤".split("");
+let lettersSuccess = "success".split("");
+let lettersFailure = "Registeration Failed".split("");
+let weakPass = "Your password is weak".split("");
 let isMouseDown = false;
+let defaultColor = "#aaa";
+let successColor = "rgb(12, 241, 12)";
+let failureColor = "red";
 
 //functions and loops
+
+function successReg(){
+  h2.style.color = successColor;
+  register.style.backgroundColor = successColor;
+  show.style.backgroundColor = successColor;
+  for (let i = 0; i < anchors.length; i++) {
+    anchors[i].style.color = successColor;
+  }
+}
+
+function failureReg(){
+  h2.style.color = failureColor;
+  register.style.backgroundColor = failureColor;
+  show.style.backgroundColor = failureColor;
+  for (let i = 0; i < anchors.length; i++) {
+    anchors[i].style.color = failureColor;
+  }
+  
+  setTimeout(function(){
+    h2.style.color = defaultBlue;
+    register.style.backgroundColor = defaultBlue;
+    show.style.backgroundColor = defaultBlue;
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].style.color = defaultBlue;
+    }
+    removeLetters();
+    addLetters(letters,defaultColor);
+  }, 3000);
+}
 
 document.addEventListener('mouseup', function () {
 
@@ -21,6 +59,7 @@ document.addEventListener('mouseup', function () {
   isMouseDown = false;
 
 });
+
 for (let i = 0; i < span.length; i++) {
 
   // add event listeners to each span
@@ -34,7 +73,7 @@ for (let i = 0; i < span.length; i++) {
     // set isMouseDown to true and change the background color of the span
 
     isMouseDown = true;
-    span[i].style.backgroundColor = '#006494';
+    span[i].style.backgroundColor = defaultBlue;
   });
 
 
@@ -43,29 +82,41 @@ for (let i = 0; i < span.length; i++) {
     // change the background color of the span if isMouseDown is true
 
     if (isMouseDown) {
-      span[i].style.backgroundColor = '#006494';
+      span[i].style.backgroundColor = defaultBlue;
     }
   });
 
   // change the background color of the span when the mouse is clicked
 
   span[i].addEventListener('click', function () {
-    span[i].style.backgroundColor = '#006494';
+    span[i].style.backgroundColor = defaultBlue;
   });
 
   // change the background color of the span when the mouse is released
 
   span[i].addEventListener('mouseleave', function () {
     if (isMouseDown) {
-      span[i].style.backgroundColor = '#006494';
+      span[i].style.backgroundColor = defaultBlue;
     }
   });
 }
 
 //set the text content of each span to the corresponding letter in the letters array
 
-for (let i = 0; i < span.length; i++) {
-  span[i].textContent = letters[i]
+function addLetters(lettersToAdd, color) {
+  for (let i = 0; i < lettersToAdd.length; i++) {
+    span[i].textContent = lettersToAdd[i];
+    span[i].style.color = color;
+  }
+}
+addLetters(letters,defaultColor);
+
+// remove letters from blocks
+
+function removeLetters(){
+  for (let i = 0; i < weakPass.length; i++) {
+    span[i].textContent = '';
+  }
 }
 
 //add event listeners to the password input and show button to toggle the password visibility
@@ -196,9 +247,13 @@ register.addEventListener('click', function(e) {
   let y = checkPassword(passwordInput.value);
   updateMeter(y);
 
-  // check if userCheck and checkPassword return true and push the user object to the users array
+  // check if userCheck and checkPassword return true and push the user object to the users array and remove letters
+
+  removeLetters()
 
   if (x && (y === minimumStrength)) {
+    successReg();
+    addLetters(lettersSuccess, successColor);
     let user = {
       username: inputs[0].value.toLowerCase(),
       email: inputs[1].value.toLowerCase(),
@@ -213,7 +268,15 @@ register.addEventListener('click', function(e) {
     }
     meter.style.width = '0%';
     localStorage.setItem('users', JSON.stringify(users));
-    alert('Registration successful!');
+    setInterval(function() {
+      window.location.href = 'login.html';
+    }, 2500)
+  } else if (x && (y < minimumStrength)) {
+    addLetters(weakPass, failureColor);
+    failureReg();
+  } else {
+    addLetters(lettersFailure, failureColor);
+    failureReg();
   }
 });
 

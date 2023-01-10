@@ -190,7 +190,6 @@ section .signin .contain .form .inputBox input:focus ~ i {
 }
 section span {
     position: relative;
-    color: #aaa;
     user-select: none;
     display: flex;
     text-transform: uppercase;
